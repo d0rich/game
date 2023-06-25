@@ -1,34 +1,41 @@
-import { type Container, type AnimatedSprite } from 'pixi.js';
+import { Container, type AnimatedSprite } from 'pixi.js';
 import getAnimation from 'utils/src/getAnimation';
 
 import idleFrames from 'assets/bosses/robot/sprites/Idle.png';
 import walkFrames from 'assets/bosses/robot/sprites/Walk.png';
 
+const animationOptions: Parameters<typeof getAnimation>[1] = {
+  height: 64,
+  width: 64,
+};
+
 const robotAnimations = {
-  idle: await getAnimation(idleFrames),
-  walk: await getAnimation(walkFrames)
-}
+  idle: await getAnimation(idleFrames, animationOptions),
+  walk: await getAnimation(walkFrames, animationOptions),
+};
 
 export class Robot {
   state: keyof typeof robotAnimations = 'idle';
+  readonly container: Container = new Container();
   private currentSprite: AnimatedSprite | null = null;
-  private position: { x: number, y: number } = { x: 0, y: 0 };
+  private position: { x: number; y: number } = { x: 0, y: 0 };
 
-  constructor(private stage: Container) {
-    this.switchAnimation('idle')
+  constructor() {
+    this.switchAnimation('idle');
+    console.log(this);
     setInterval(() => {
       const newState = this.state === 'idle' ? 'walk' : 'idle';
-      this.switchAnimation(newState)
-      console.log(newState)
-    }, 3000)
+      this.switchAnimation(newState);
+      console.log(newState);
+    }, 3000);
   }
 
   setPosition(x: number, y: number) {
     this.position.x = x;
     this.position.y = y;
     if (this.currentSprite) {
-      this.currentSprite.x = this.position.x;
-      this.currentSprite.y = this.position.y;
+      this.container.x = this.position.x;
+      this.container.y = this.position.y;
     }
   }
 
@@ -47,14 +54,12 @@ export class Robot {
   private switchAnimation(state: keyof typeof robotAnimations) {
     if (this.currentSprite) {
       this.currentSprite.gotoAndStop(0);
-      this.stage.removeChild(this.currentSprite);
+      this.container.removeChild(this.currentSprite);
     }
     this.currentSprite = robotAnimations[state];
-    this.currentSprite.x = this.position.x;
-    this.currentSprite.y = this.position.y;
-    this.currentSprite.animationSpeed = 1/12;
+    this.currentSprite.animationSpeed = 1 / 12;
     this.currentSprite.play();
-    this.stage.addChild(this.currentSprite);
+    this.container.addChild(this.currentSprite);
     this.state = state;
   }
 }

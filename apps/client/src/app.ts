@@ -6,13 +6,8 @@ export async function setupApp(element: HTMLElement) {
   element.appendChild(app.view as HTMLCanvasElement);
   const robot = new Robot();
   app.stage.addChild(robot.container);
-  let elapsed = 0.0;
   app.ticker.add((delta) => {
-    // Add the time to our total elapsed time
-    elapsed += delta;
-    // Update the sprite's X position based on the cosine of our elapsed time.  We divide
-    // by 50 to slow the animation down a bit...
-    robot.setPosition(100.0 + Math.cos(elapsed / 50.0) * 100.0, 0);
+    robot.onUpdate(delta);
   });
   return app;
 }

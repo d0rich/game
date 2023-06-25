@@ -10,17 +10,20 @@ function countFrames(texture: BaseTexture) {
   return width / height;
 }
 
-export default async function getAnimation(path: string, options?: {
-  height?: number,
-  width?: number
-}) {
+export default async function getAnimation(
+  path: string,
+  options?: {
+    height?: number;
+    width?: number;
+  }
+) {
   const texture = BaseTexture.from(path);
   await new Promise((resolve) => {
     texture.once('loaded', resolve);
-  })
+  });
   const frames: Record<string, ISpritesheetFrameData> = {};
   const size = texture.height;
-  const animation: string[] = []
+  const animation: string[] = [];
   for (let i = 0; i < countFrames(texture); i++) {
     frames[i.toString()] = {
       frame: {
@@ -30,7 +33,7 @@ export default async function getAnimation(path: string, options?: {
         y: options?.height ? size - options.height : 0,
       },
     };
-    animation.push(i.toString())
+    animation.push(i.toString());
   }
   const spritesheet = new Spritesheet(texture, {
     frames,
@@ -38,8 +41,8 @@ export default async function getAnimation(path: string, options?: {
       scale: '1',
     },
     animations: {
-      animation
-    }
+      animation,
+    },
   });
   await spritesheet.parse();
   const animatedSprite = new AnimatedSprite(spritesheet.animations.animation);

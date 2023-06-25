@@ -17,8 +17,14 @@ const robotAnimations = {
 export class Robot {
   state: keyof typeof robotAnimations = 'idle';
   readonly container: Container = new Container();
+  get position(): { x: number; y: number } {
+    return {
+      x: this.container.x,
+      y: this.container.y,
+    };
+  }
+
   private currentSprite: AnimatedSprite | null = null;
-  private position: { x: number; y: number } = { x: 0, y: 0 };
 
   constructor() {
     this.switchAnimation('idle');
@@ -31,12 +37,8 @@ export class Robot {
   }
 
   setPosition(x: number, y: number) {
-    this.position.x = x;
-    this.position.y = y;
-    if (this.currentSprite) {
-      this.container.x = this.position.x;
-      this.container.y = this.position.y;
-    }
+    this.container.x = x;
+    this.container.y = y;
   }
 
   move(x: number, y: number) {

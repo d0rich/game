@@ -27,7 +27,7 @@ export class Robot {
   velocity: Vector2 = new Vector2(0, 0);
   readonly container: Container = new Container();
   get position() {
-    return new Position(this.container.x, this.container.y);
+    return new Position(this.container.x, this.container.parent?.height - this.container.y);
   }
   get direction() {
     return this.velocity.x > 0 ? Direction.RIGHT : Direction.LEFT;
@@ -35,10 +35,21 @@ export class Robot {
 
   private currentSprite: AnimatedSprite | null = null;
 
-  constructor() {
+  constructor(options?: {
+    position?: Position;
+    stage?: Container;
+  }) {
     this.switchAnimation('walk');
     this.container.pivot.x = this.container.width / 2;
-    //this.container.pivot.y = this.container.height / 2;
+    this.container.pivot.y = this.container.height;
+    if (options?.stage) {
+      options.stage.addChild(this.container);
+    }
+    if (options?.position) {
+      this.setPosition(options.position);
+    } else {
+      this.setPosition(new Position(0, 0));
+    }
     setInterval(() => {
       this.setVelocityX(2);
       setTimeout(() => {
@@ -57,10 +68,14 @@ export class Robot {
     const newPosition = this.position.add(
       this.velocity.multiplyByScalar(delta)
     );
-    this.container.x = newPosition.x;
-    this.container.y = newPosition.y;
+    this.setPosition(newPosition);
     this.container.scale.x = this.direction === Direction.RIGHT ? 1 : -1;
     this.switchAnimation(this.velocity.x === 0 ? 'idle' : 'walk');
+  }
+
+  setPosition(position: Position) {
+    this.container.x = position.x;
+    this.container.y = this.container.parent?.height - position.y;
   }
 
   setVelocity(velocity: Vector2) {

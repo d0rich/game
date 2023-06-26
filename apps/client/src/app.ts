@@ -1,5 +1,6 @@
 import { Application, Graphics } from 'pixi.js';
 import { Robot } from './bosses/Robot';
+import { Controller } from './Controller';
 import { Position } from 'engine/src/Position';
 
 export async function setupApp(element: HTMLElement) {
@@ -12,20 +13,9 @@ export async function setupApp(element: HTMLElement) {
   app.stage.addChild(fullScreenContainer)
   const robot = new Robot({
     stage: app.stage,
-    position: new Position(0, 180)
+    position: new Position(0, 180),
+    controller: new Controller()
   });
-  setInterval(() => {
-    robot.setVelocityX(2);
-    setTimeout(() => {
-      robot.resetVelocity();
-    }, 3000);
-    setTimeout(() => {
-      robot.setVelocityX(-2);
-    }, 4000);
-    setTimeout(() => {
-      robot.resetVelocity();
-    }, 7000);
-  }, 8000);
   app.ticker.add((delta) => {
     robot.onUpdate(delta);
   });

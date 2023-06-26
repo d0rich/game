@@ -1,6 +1,7 @@
 import { Container, type AnimatedSprite } from 'pixi.js';
 import { Position } from 'engine/src/Position';
 import getAnimation from 'utils/src/getAnimation';
+import type { Controller } from '../Controller';
 
 import idleFrames from 'assets/bosses/robot/sprites/Idle.png';
 import walkFrames from 'assets/bosses/robot/sprites/Walk.png';
@@ -38,6 +39,7 @@ export class Robot {
   constructor(options?: {
     position?: Position;
     stage?: Container;
+    controller?: Controller;
   }) {
     this.switchAnimation('walk');
     this.container.pivot.x = this.container.width / 2;
@@ -49,6 +51,20 @@ export class Robot {
       this.setPosition(options.position);
     } else {
       this.setPosition(new Position(0, 0));
+    }
+    if (options?.controller) {
+      options.controller.addEventListener('left:start', () => {
+        this.setVelocity(this.velocity.add(new Vector2(-2, 0)));
+      });
+      options.controller.addEventListener('left:stop', () => {
+        this.setVelocity(this.velocity.add(new Vector2(2, 0)));
+      });
+      options.controller.addEventListener('right:start', () => {
+        this.setVelocity(this.velocity.add(new Vector2(2, 0)));
+      });
+      options.controller.addEventListener('right:stop', () => {
+        this.setVelocity(this.velocity.add(new Vector2(-2, 0)));
+      });
     }
   }
 

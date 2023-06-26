@@ -1,8 +1,9 @@
-import { Container, type AnimatedSprite } from 'pixi.js';
+import { Container } from 'pixi.js';
 import { Position } from 'engine/src/Position';
 import getAnimation from 'utils/src/getAnimation';
-import type { Controller } from '../Controller';
-import Creature, { CreatureAnimations } from 'engine/src/Creature';
+import type { Controller } from 'engine/src/Controller';
+import { CreatureAnimations } from 'engine/src/Creature';
+import { PlayableCreature } from 'engine/src/PlayableCreature';
 
 import idleFrames from 'assets/bosses/robot/sprites/Idle.png';
 import walkFrames from 'assets/bosses/robot/sprites/Walk.png';
@@ -22,7 +23,7 @@ const robotAnimations: CreatureAnimations = {
   walk: await getAnimation(walkFrames, animationOptions),
 };
 
-export class Robot extends Creature {
+export class Robot extends PlayableCreature {
   constructor(options?: {
     position?: Position;
     stage?: Container;
@@ -31,14 +32,12 @@ export class Robot extends Creature {
     super({
       position: options?.position,
       stage: options?.stage,
+      controller: options?.controller,
       animations: robotAnimations,
     });
-    if (options?.controller) {
-      this.setupController(options.controller);
-    }
   }
 
-  private setupController(controller: Controller) {
+  protected setupController(controller: Controller) {
     controller.addEventListener('left:start', () => {
       this.ownVelocity = this.ownVelocity.add(new Vector2(-2, 0));
     });

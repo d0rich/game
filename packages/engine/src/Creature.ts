@@ -8,7 +8,7 @@ export type CreatureAnimations = {
   walk: AnimatedSprite;
 };
 
-export default abstract class Creature {
+export abstract class Creature {
   state: keyof CreatureAnimations = 'idle';
   velocity: Vector2 = new Vector2(0, 0);
   direction: Direction = Direction.RIGHT;

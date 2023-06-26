@@ -1,6 +1,6 @@
 import { Application, Graphics } from 'pixi.js';
 import { Robot } from './bosses/Robot';
-import { Controller } from './Controller';
+import { Controller } from 'engine/src/Controller';
 import { Position } from 'engine/src/Position';
 
 export async function setupApp(element: HTMLElement) {

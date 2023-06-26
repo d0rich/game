@@ -12,8 +12,6 @@ export abstract class Creature extends Entity {
   state: keyof CreatureAnimations = 'idle';
   private animations: CreatureAnimations;
 
-  private currentSprite: AnimatedSprite | null = null;
-
   constructor(options: {
     position?: Position;
     stage?: Container;
@@ -47,14 +45,10 @@ export abstract class Creature extends Entity {
     if (this.state === state && !options?.forceUpdate) {
       return;
     }
-    if (this.currentSprite) {
-      this.currentSprite.gotoAndStop(0);
-      this.container.removeChild(this.currentSprite);
-    }
-    this.currentSprite = this.animations[state];
-    this.currentSprite.animationSpeed = 1 / 12;
-    this.currentSprite.play();
-    this.container.addChild(this.currentSprite);
+    const newSprite = this.animations[state];
+    newSprite.animationSpeed = 1 / 12;
+    newSprite.play();
+    this.switchSprite(newSprite);
     this.state = state;
   }
 }

@@ -1,7 +1,7 @@
 import { Vector2 } from './Vector2';
 import { Position } from './Position';
 import { Direction } from './Direction';
-import { Container, type AnimatedSprite } from 'pixi.js';
+import { Container, AnimatedSprite, Sprite } from 'pixi.js';
 import { Collider } from './Collider';
 
 export abstract class Entity {
@@ -9,6 +9,7 @@ export abstract class Entity {
   direction: Direction = Direction.RIGHT;
   readonly container: Container = new Container();
   protected ownVelocity: Vector2 = new Vector2(0, 0);
+  protected currentSprite: Sprite | null = null;
 
   constructor(options: { position?: Position; stage?: Container }) {
     if (options?.stage) {
@@ -62,5 +63,16 @@ export abstract class Entity {
 
   resetVelocity() {
     this.velocity = new Vector2(0, 0);
+  }
+
+  switchSprite(sprite: Sprite) {
+    if (this.currentSprite) {
+      if (this.currentSprite instanceof AnimatedSprite) {
+        this.currentSprite.gotoAndStop(0);
+      }
+      this.container.removeChild(this.currentSprite);
+    }
+    this.container.addChild(sprite);
+    this.currentSprite = sprite;
   }
 }

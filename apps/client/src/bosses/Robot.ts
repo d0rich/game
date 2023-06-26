@@ -21,6 +21,7 @@ const animationOptions: Parameters<typeof getAnimation>[1] = {
 const robotAnimations: CreatureAnimations = {
   idle: await getAnimation(idleFrames, animationOptions),
   walk: await getAnimation(walkFrames, animationOptions),
+  jump: await getAnimation(specialFrames, animationOptions),
 };
 
 export class Robot extends PlayableCreature {
@@ -49,6 +50,11 @@ export class Robot extends PlayableCreature {
     });
     controller.addEventListener('right:stop', () => {
       this.ownVelocity = this.ownVelocity.add(new Vector2(-2, 0));
+    });
+    controller.addEventListener('up:start', () => {
+      if (this.velocity.y === 0) {
+        this.outsideVelocity = this.outsideVelocity.add(new Vector2(0, 20));
+      }
     });
   }
 }

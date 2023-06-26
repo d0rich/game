@@ -38,6 +38,9 @@ export class Vector2 {
   }
 
   project(vector: Vector2) {
-    return vector.multiplyByScalar(Math.cos(this.angleBetween(vector)));
+    if (!vector.magnitude || !this.magnitude) {
+      return new Vector2(0, 0);
+    }
+    return vector.multiplyByScalar(Math.cos(this.angleBetween(vector)) * this.magnitude);
   }
 }

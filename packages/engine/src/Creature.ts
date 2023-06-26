@@ -7,6 +7,7 @@ import { Collider } from './Collider';
 export type CreatureAnimations = {
   idle: AnimatedSprite;
   walk: AnimatedSprite;
+  jump: AnimatedSprite;
 };
 
 export abstract class Creature extends Entity {
@@ -38,7 +39,11 @@ export abstract class Creature extends Entity {
       this.direction = Direction.LEFT;
     }
     this.container.scale.x = this.direction === Direction.RIGHT ? 1 : -1;
-    this.switchAnimation(this.ownVelocity.x === 0 ? 'idle' : 'walk');
+    if (this.velocity.y !== 0) {
+      this.switchAnimation('jump');
+    } else {
+       this.switchAnimation(this.ownVelocity.x === 0 ? 'idle' : 'walk');
+    }
   }
 
   protected switchAnimation(

@@ -8,6 +8,8 @@ export class Controller extends EventTarget {
         this.leftStart();
       } else if (event.key === 'ArrowRight' && !this.isRightPressed) {
         this.rightStart();
+      } else if (event.key === 'ArrowUp' && !this.isUpPressed) {
+        this.upStart();
       }
       this.keysPressed.add(event.key);
     });
@@ -17,6 +19,8 @@ export class Controller extends EventTarget {
         this.leftStop();
       } else if (event.key === 'ArrowRight') {
         this.rightStop();
+      } else if (event.key === 'ArrowUp') {
+        this.upStop();
       }
     });
   }
@@ -27,6 +31,10 @@ export class Controller extends EventTarget {
 
   get isRightPressed() {
     return this.keysPressed.has('ArrowRight');
+  }
+
+  get isUpPressed() {
+    return this.keysPressed.has('ArrowUp');
   }
 
   private leftStart() {
@@ -43,5 +51,13 @@ export class Controller extends EventTarget {
 
   private rightStop() {
     this.dispatchEvent(new Event('right:stop'));
+  }
+
+  private upStart() {
+    this.dispatchEvent(new Event('up:start'));
+  }
+
+  private upStop() {
+    this.dispatchEvent(new Event('up:stop'));
   }
 }

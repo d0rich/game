@@ -3,7 +3,7 @@ import { Robot } from './bosses/Robot';
 import { Controller } from 'engine/src/Controller';
 import { Position } from 'engine/src/Position';
 import { Ground } from './environment/Ground';
-import { Physics } from 'engine/src/Physincs';
+import { Physics } from 'engine/src/Physics';
 
 export async function setupApp(element: HTMLElement) {
   const app = new Application({ width: 640, height: 360 });

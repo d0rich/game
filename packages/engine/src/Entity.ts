@@ -45,7 +45,7 @@ export abstract class Entity {
 
   onUpdate(delta: number) {
     const newPosition = this.position.add(
-      this.ownVelocity.add(this.velocity).multiplyByScalar(delta)
+      this.velocity.multiplyByScalar(delta)
     );
     this.setPosition(newPosition);
   }

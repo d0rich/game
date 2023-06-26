@@ -1,6 +1,9 @@
 import { Entity } from './Entity';
 import { Vector2 } from './Vector2';
 
+const horizontalVector = new Vector2(1, 0);
+const verticalVector = new Vector2(0, 1);
+
 export class Physics {
   gravity = 0.98;
   gravitableEntities: Entity[] = [];
@@ -19,10 +22,12 @@ export class Physics {
   update(deltaTime: number) {
     for (let i = 0; i < this.gravitableEntities.length; i++) {
       const entity = this.gravitableEntities[i];
-      entity.setVelocity(entity.velocity.add(0, -this.gravity * deltaTime));
+      entity.setVelocity(entity.outsideVelocity.add(0, -this.gravity * deltaTime));
     }
     this.checkCollisions(this.mainEntity, deltaTime);
+    // console.log(this.mainEntity.velocity);
     this.mainEntity.onUpdate(deltaTime);
+    
   }
 
   checkCollisions(entity: Entity, deltaTime: number) {
@@ -36,7 +41,11 @@ export class Physics {
         )
       ) {
         entity.outsideVelocity = new Vector2(0, 0);
-        entity.outsideVelocity = entity.velocity.multiplyByScalar(-1);
+        if (Math.abs(entity.velocity.x) > Math.abs(entity.velocity.y)) {
+          entity.outsideVelocity = entity.velocity.project(verticalVector).multiplyByScalar(-1);
+        } else {
+          entity.outsideVelocity = entity.velocity.project(horizontalVector).multiplyByScalar(-1);
+        }
       }
     }
   }

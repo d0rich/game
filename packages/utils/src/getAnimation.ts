@@ -4,6 +4,7 @@ import {
   type ISpritesheetFrameData,
   AnimatedSprite,
 } from 'pixi.js';
+import { getTexture } from './getTexture';
 
 function countFrames(texture: BaseTexture) {
   const { width, height } = texture;
@@ -17,10 +18,7 @@ export default async function getAnimation(
     width?: number;
   }
 ) {
-  const texture = BaseTexture.from(path);
-  await new Promise((resolve) => {
-    texture.once('loaded', resolve);
-  });
+  const texture = await getTexture(path);
   const frames: Record<string, ISpritesheetFrameData> = {};
   const size = texture.height;
   const animation: string[] = [];

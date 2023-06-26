@@ -2,6 +2,7 @@ import { Application, Graphics } from 'pixi.js';
 import { Robot } from './bosses/Robot';
 import { Controller } from 'engine/src/Controller';
 import { Position } from 'engine/src/Position';
+import { Ground } from './environment/Ground';
 
 export async function setupApp(element: HTMLElement) {
   const app = new Application({ width: 640, height: 360 });
@@ -15,6 +16,10 @@ export async function setupApp(element: HTMLElement) {
     stage: app.stage,
     position: new Position(0, 180),
     controller: new Controller(),
+  });
+  const ground = new Ground({
+    stage: app.stage,
+    position: new Position(50, 100),
   });
   app.ticker.add((delta) => {
     robot.onUpdate(delta);

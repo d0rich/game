@@ -5,16 +5,16 @@ import { Position } from 'engine/src/Position';
 
 export async function setupApp(element: HTMLElement) {
   const app = new Application({ width: 640, height: 360 });
-  const fullScreenContainer = new Graphics()
-  fullScreenContainer.beginFill(0x000000)
-  fullScreenContainer.drawRect(0, 0, 640, 360)
-  fullScreenContainer.zIndex = -1
+  const fullScreenContainer = new Graphics();
+  fullScreenContainer.beginFill(0x000000);
+  fullScreenContainer.drawRect(0, 0, 640, 360);
+  fullScreenContainer.zIndex = -1;
   element.appendChild(app.view as HTMLCanvasElement);
-  app.stage.addChild(fullScreenContainer)
+  app.stage.addChild(fullScreenContainer);
   const robot = new Robot({
     stage: app.stage,
     position: new Position(0, 180),
-    controller: new Controller()
+    controller: new Controller(),
   });
   app.ticker.add((delta) => {
     robot.onUpdate(delta);

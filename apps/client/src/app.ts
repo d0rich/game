@@ -3,6 +3,7 @@ import { Robot } from './bosses/Robot';
 import { Controller } from 'engine/src/Controller';
 import { Position } from 'engine/src/Position';
 import { Ground } from './environment/Ground';
+import { Physics } from 'engine/src/Physincs';
 
 export async function setupApp(element: HTMLElement) {
   const app = new Application({ width: 640, height: 360 });
@@ -14,15 +15,18 @@ export async function setupApp(element: HTMLElement) {
   app.stage.addChild(fullScreenContainer);
   const robot = new Robot({
     stage: app.stage,
-    position: new Position(0, 180),
+    position: new Position(50, 300),
     controller: new Controller(),
   });
+  const physics = new Physics(robot);
   const ground = new Ground({
     stage: app.stage,
-    position: new Position(0, 100),
+    position: new Position(0, 0),
   });
+  physics.registerGravitableEntities(robot);
+  physics.registerStaticEntities(ground);
   app.ticker.add((delta) => {
-    robot.onUpdate(delta);
+    physics.update(delta);
   });
   return app;
 }

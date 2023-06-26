@@ -5,8 +5,8 @@ import { Container, AnimatedSprite, Sprite } from 'pixi.js';
 import { Collider } from './Collider';
 
 export abstract class Entity {
-  velocity: Vector2 = new Vector2(0, 0);
   direction: Direction = Direction.RIGHT;
+  outsideVelocity: Vector2 = new Vector2(0, 0);
   readonly container: Container = new Container();
   protected ownVelocity: Vector2 = new Vector2(0, 0);
   protected currentSprite: Sprite | null = null;
@@ -20,6 +20,10 @@ export abstract class Entity {
     } else {
       this.setPosition(new Position(0, 0));
     }
+  }
+
+  get velocity() {
+    return this.outsideVelocity.add(this.ownVelocity);
   }
 
   get position() {
@@ -52,19 +56,19 @@ export abstract class Entity {
   }
 
   setVelocity(velocity: Vector2) {
-    this.velocity = velocity;
+    this.outsideVelocity = velocity;
   }
 
   setVelocityX(x: number) {
-    this.velocity = new Vector2(x, this.velocity.y);
+    this.outsideVelocity = new Vector2(x, this.outsideVelocity.y);
   }
 
   setVelocityY(y: number) {
-    this.velocity = new Vector2(this.velocity.x, y);
+    this.outsideVelocity = new Vector2(this.outsideVelocity.x, y);
   }
 
   resetVelocity() {
-    this.velocity = new Vector2(0, 0);
+    this.outsideVelocity = new Vector2(0, 0);
   }
 
   switchSprite(sprite: Sprite) {

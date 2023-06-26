@@ -5,6 +5,10 @@ import type { Controller } from '../Controller';
 
 import idleFrames from 'assets/bosses/robot/sprites/Idle.png';
 import walkFrames from 'assets/bosses/robot/sprites/Walk.png';
+import attack1Frames from 'assets/bosses/robot/sprites/Attack1.png';
+import attack2Frames from 'assets/bosses/robot/sprites/Attack2.png';
+import attack3Frames from 'assets/bosses/robot/sprites/Attack3.png';
+import specialFrames from 'assets/bosses/robot/sprites/Special.png';
 import { Vector2 } from 'engine/src/Vector2';
 
 const animationOptions: Parameters<typeof getAnimation>[1] = {
@@ -26,12 +30,11 @@ enum Direction {
 export class Robot {
   state: keyof typeof robotAnimations = 'idle';
   velocity: Vector2 = new Vector2(0, 0);
+  private ownVelocity: Vector2 = new Vector2(0, 0);
+  direction: Direction = Direction.RIGHT;
   readonly container: Container = new Container();
   get position() {
     return new Position(this.container.x, this.container.parent?.height - this.container.y);
-  }
-  get direction() {
-    return this.velocity.x > 0 ? Direction.RIGHT : Direction.LEFT;
   }
 
   private currentSprite: AnimatedSprite | null = null;
@@ -53,28 +56,22 @@ export class Robot {
       this.setPosition(new Position(0, 0));
     }
     if (options?.controller) {
-      options.controller.addEventListener('left:start', () => {
-        this.setVelocity(this.velocity.add(new Vector2(-2, 0)));
-      });
-      options.controller.addEventListener('left:stop', () => {
-        this.setVelocity(this.velocity.add(new Vector2(2, 0)));
-      });
-      options.controller.addEventListener('right:start', () => {
-        this.setVelocity(this.velocity.add(new Vector2(2, 0)));
-      });
-      options.controller.addEventListener('right:stop', () => {
-        this.setVelocity(this.velocity.add(new Vector2(-2, 0)));
-      });
+      this.setupController(options.controller);
     }
   }
 
   onUpdate(delta: number) {
     const newPosition = this.position.add(
-      this.velocity.multiplyByScalar(delta)
+      this.ownVelocity.add(this.velocity).multiplyByScalar(delta)
     );
     this.setPosition(newPosition);
+    if (this.ownVelocity.x > 0) {
+      this.direction = Direction.RIGHT;
+    } else if (this.ownVelocity.x < 0) {
+      this.direction = Direction.LEFT;
+    }
     this.container.scale.x = this.direction === Direction.RIGHT ? 1 : -1;
-    this.switchAnimation(this.velocity.x === 0 ? 'idle' : 'walk');
+    this.switchAnimation(this.ownVelocity.x === 0 ? 'idle' : 'walk');
   }
 
   setPosition(position: Position) {
@@ -97,6 +94,22 @@ export class Robot {
   resetVelocity() {
     this.velocity = new Vector2(0, 0);
   }
+
+  private setupController(controller: Controller) {
+    controller.addEventListener('left:start', () => {
+      this.ownVelocity = this.ownVelocity.add(new Vector2(-2, 0));
+    });
+    controller.addEventListener('left:stop', () => {
+      this.ownVelocity = this.ownVelocity.add(new Vector2(2, 0));
+    });
+    controller.addEventListener('right:start', () => {
+      this.ownVelocity = this.ownVelocity.add(new Vector2(2, 0));
+    });
+    controller.addEventListener('right:stop', () => {
+      this.ownVelocity = this.ownVelocity.add(new Vector2(-2, 0));
+    });
+  }
+
 
   private switchAnimation(state: keyof typeof robotAnimations) {
     if (this.state === state) return;

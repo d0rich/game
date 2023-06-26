@@ -1,9 +1,27 @@
 import { Position } from './Position';
 import { Vector2 } from './Vector2';
+import { Creature } from './Creature';
+import { Block } from './Block';
 
 export class Collider {
+  static fromCreature(creature: Creature) {
+    const width = Math.abs(creature.container.width);
+    const height = Math.abs(creature.container.height);
+    return new Collider(creature.position.add(0, height / 2), width, height);
+  }
+
+  static fromBlock(block: Block) {
+    const width = Math.abs(block.container.width);
+    const height = Math.abs(block.container.height);
+    return new Collider(
+      block.position.add(width / 2, height / 2),
+      width,
+      height
+    );
+  }
+
   constructor(
-    readonly position: Position,
+    readonly center: Position,
     readonly width: number,
     readonly height: number
   ) {
@@ -16,23 +34,19 @@ export class Collider {
   }
 
   get left() {
-    return this.position.x - this.width / 2;
+    return this.center.x - this.width / 2;
   }
 
   get right() {
-    return this.position.x + this.width / 2;
+    return this.center.x + this.width / 2;
   }
 
   get top() {
-    return this.position.y + this.height;
+    return this.center.y + this.height / 2;
   }
 
   get bottom() {
-    return this.position.y;
-  }
-
-  get center() {
-    return this.position.add(new Vector2(0, this.height / 2));
+    return this.center.y - this.height / 2;
   }
 
   isCollidingWith(other: Collider) {
@@ -59,13 +73,13 @@ export class Collider {
     velocity: Vector2 = new Vector2(0, 0),
     otherVelocity: Vector2 = new Vector2(0, 0)
   ) {
-    const nextPosition = this.position.add(velocity.multiplyByScalar(delta));
-    const nextCollider = new Collider(nextPosition, this.width, this.height);
-    const nextOtherPosition = other.position.add(
+    const nextCenter = this.center.add(velocity.multiplyByScalar(delta));
+    const nextCollider = new Collider(nextCenter, this.width, this.height);
+    const nextOtherCenter = other.center.add(
       otherVelocity.multiplyByScalar(delta)
     );
     const nextOtherCollider = new Collider(
-      nextOtherPosition,
+      nextOtherCenter,
       other.width,
       other.height
     );

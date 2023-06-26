@@ -2,6 +2,7 @@ import { Position } from './Position';
 import { Direction } from './Direction';
 import { Container, type AnimatedSprite } from 'pixi.js';
 import { Entity } from './Entity';
+import { Collider } from './Collider';
 
 export type CreatureAnimations = {
   idle: AnimatedSprite;
@@ -23,6 +24,10 @@ export abstract class Creature extends Entity {
     this.currentSprite = this.animations.idle;
     this.container.pivot.x = this.container.width / 2;
     this.container.pivot.y = this.container.height;
+  }
+
+  get collider() {
+    return Collider.fromCreature(this);
   }
 
   onUpdate(delta: number) {

@@ -19,7 +19,7 @@ export async function setupApp(element: HTMLElement) {
   });
   const ground = new Ground({
     stage: app.stage,
-    position: new Position(50, 100),
+    position: new Position(0, 100),
   });
   app.ticker.add((delta) => {
     robot.onUpdate(delta);

@@ -30,10 +30,12 @@ export abstract class Entity {
   }
 
   get collider() {
+    const width = this.container.width;
+    const height = this.container.height;
     return new Collider(
-      this.position,
-      Math.abs(this.container.width),
-      Math.abs(this.container.height)
+      this.position.add(width / 2, -height / 2),
+      width,
+      height
     );
   }
 

@@ -2,6 +2,7 @@ import { Vector2 } from './Vector2';
 import { Position } from './Position';
 import { Direction } from './Direction';
 import { Container, type AnimatedSprite } from 'pixi.js';
+import { Collider } from './Collider';
 
 export type CreatureAnimations = {
   idle: AnimatedSprite;
@@ -42,6 +43,14 @@ export abstract class Creature {
     return new Position(
       this.container.x,
       this.container.parent?.height - this.container.y
+    );
+  }
+
+  get collider() {
+    return new Collider(
+      this.position,
+      Math.abs(this.container.width),
+      Math.abs(this.container.height)
     );
   }
 

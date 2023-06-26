@@ -1,4 +1,4 @@
-import { Application, Container, Graphics } from 'pixi.js';
+import { Application, Graphics } from 'pixi.js';
 import { Robot } from './bosses/Robot';
 import { Position } from 'engine/src/Position';
 
@@ -14,7 +14,18 @@ export async function setupApp(element: HTMLElement) {
     stage: app.stage,
     position: new Position(0, 180)
   });
-  robot.setVelocityY(.3);
+  setInterval(() => {
+    robot.setVelocityX(2);
+    setTimeout(() => {
+      robot.resetVelocity();
+    }, 3000);
+    setTimeout(() => {
+      robot.setVelocityX(-2);
+    }, 4000);
+    setTimeout(() => {
+      robot.resetVelocity();
+    }, 7000);
+  }, 8000);
   app.ticker.add((delta) => {
     robot.onUpdate(delta);
   });

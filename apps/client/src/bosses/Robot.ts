@@ -50,18 +50,6 @@ export class Robot {
     } else {
       this.setPosition(new Position(0, 0));
     }
-    setInterval(() => {
-      this.setVelocityX(2);
-      setTimeout(() => {
-        this.resetVelocity();
-      }, 3000);
-      setTimeout(() => {
-        this.setVelocityX(-2);
-      }, 4000);
-      setTimeout(() => {
-        this.resetVelocity();
-      }, 7000);
-    }, 8000);
   }
 
   onUpdate(delta: number) {

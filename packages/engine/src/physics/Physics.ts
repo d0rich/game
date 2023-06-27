@@ -1,4 +1,5 @@
 import { Entity } from '../entities';
+import { Collider } from './Collider';
 import { Position } from './Position';
 import { Vector2 } from './Vector2';
 
@@ -31,7 +32,7 @@ export class Physics {
         );
       }
     }
-    // this.checkCollisions(this.mainEntity, deltaTime);
+    this.checkCollisions(this.mainEntity, deltaTime);
     // console.log(this.mainEntity.velocity);
     this.mainEntity.onUpdate(deltaTime);
   }
@@ -84,22 +85,16 @@ export class Physics {
   checkCollisions(entity: Entity, deltaTime: number) {
     for (let i = 0; i < this.staticEntities.length; i++) {
       const staticEntity = this.staticEntities[i];
+      const nextEntityCollider = entity.collider.getNextCollider(deltaTime, entity.velocity);
       if (
-        entity.collider.willCollideWith(
-          deltaTime,
-          staticEntity.collider,
-          entity.velocity
-        )
+        nextEntityCollider.isCollidingWith(staticEntity.collider)
       ) {
-        entity.outerVelocity = new Vector2(0, 0);
-        if (Math.abs(entity.velocity.x) > Math.abs(entity.velocity.y)) {
-          entity.outerVelocity = entity.velocity
-            .project(verticalVector)
-            .multiplyByScalar(-1);
-        } else {
-          entity.outerVelocity = entity.velocity
-            .project(horizontalVector)
-            .multiplyByScalar(-1);
+        if (entity.velocity.x > 0) {
+          entity.setVelocityX(0);
+          entity.setPosition(new Position(staticEntity.collider.left - entity.collider.width / 2, entity.position.y));
+        } else if (entity.velocity.x < 0) {
+          entity.setVelocityX(0);
+          entity.setPosition(new Position(staticEntity.collider.right + entity.collider.width / 2, entity.position.y));
         }
       }
     }

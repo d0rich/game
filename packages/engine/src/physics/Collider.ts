@@ -66,22 +66,21 @@ export class Collider {
     );
   }
 
+  getNextCollider(delta: number, velocity: Vector2) {
+    return new Collider(
+      this.center.add(velocity.multiplyByScalar(delta)),
+      this.width,
+      this.height
+    );
+  }
+
   willCollideWith(
     delta: number,
     other: Collider,
     velocity: Vector2 = new Vector2(0, 0),
     otherVelocity: Vector2 = new Vector2(0, 0)
   ) {
-    const nextCenter = this.center.add(velocity.multiplyByScalar(delta));
-    const nextCollider = new Collider(nextCenter, this.width, this.height);
-    const nextOtherCenter = other.center.add(
-      otherVelocity.multiplyByScalar(delta)
-    );
-    const nextOtherCollider = new Collider(
-      nextOtherCenter,
-      other.width,
-      other.height
-    );
-    return nextCollider.isCollidingWith(nextOtherCollider);
+    return this.getNextCollider(delta, velocity)
+            .isCollidingWith(other.getNextCollider(delta, otherVelocity));
   }
 }

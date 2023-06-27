@@ -1,5 +1,5 @@
 import { Container } from 'pixi.js';
-import { Position, Vector2 } from 'engine/src/physics';
+import { Collider, Position, Vector2 } from 'engine/src/physics';
 import getAnimation from 'utils/src/getAnimation';
 import type { Controller } from 'engine/src/control';
 import { CreatureAnimations, PlayableCreature } from 'engine/src/entities';
@@ -34,6 +34,10 @@ export class Robot extends PlayableCreature {
       controller: options?.controller,
       animations: robotAnimations,
     });
+  }
+
+  get collider(): Collider {
+    return Collider.fromCreature(this, 32);
   }
 
   protected setupController(controller: Controller) {

@@ -3,15 +3,19 @@ import { Vector2 } from './Vector2';
 import { Block, Creature } from '../entities';
 
 export class Collider {
-  static fromCreature(creature: Creature) {
-    const width = Math.abs(creature.container.width);
-    const height = Math.abs(creature.container.height);
+  static fromCreature(
+    creature: Creature,
+    customWidth?: number,
+    customHeight?: number
+  ) {
+    const width = customWidth ?? Math.abs(creature.container.width);
+    const height = customHeight ?? Math.abs(creature.container.height);
     return new Collider(creature.position.add(0, height / 2), width, height);
   }
 
-  static fromBlock(block: Block) {
-    const width = Math.abs(block.container.width);
-    const height = Math.abs(block.container.height);
+  static fromBlock(block: Block, customWidth?: number, customHeight?: number) {
+    const width = customWidth ?? Math.abs(block.container.width);
+    const height = customHeight ?? Math.abs(block.container.height);
     return new Collider(
       block.position.add(width / 2, height / 2),
       width,

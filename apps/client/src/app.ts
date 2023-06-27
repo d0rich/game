@@ -1,5 +1,8 @@
 import { Application, Graphics } from 'pixi.js';
-import { Robot } from './bosses/Robot';
+// import { Robot } from './bosses/Robot';
+// import { Punk } from './characters/Punk';
+import { Cyborg } from './characters/Cyborg';
+// import { Biker } from './characters/Biker';
 import { Controller } from 'engine/src/control';
 import { Position, Physics } from 'engine/src/physics';
 import { Ground } from './environment/Ground';
@@ -12,12 +15,12 @@ export async function setupApp(element: HTMLElement) {
   fullScreenContainer.zIndex = -1;
   element.appendChild(app.view as HTMLCanvasElement);
   app.stage.addChild(fullScreenContainer);
-  const robot = new Robot({
+  const main = new Cyborg({
     stage: app.stage,
     position: new Position(50, 300),
     controller: new Controller(),
   });
-  const physics = new Physics(robot);
+  const physics = new Physics(main);
   const ground = new Ground({
     stage: app.stage,
     position: new Position(0, 0),
@@ -30,7 +33,7 @@ export async function setupApp(element: HTMLElement) {
     width: 640,
     height: 128,
   });
-  physics.registerGravitableEntities(robot);
+  physics.registerGravitableEntities(main);
   physics.registerStaticEntities(ground, ground2);
   app.ticker.add((delta) => {
     physics.update(delta);

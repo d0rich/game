@@ -91,7 +91,9 @@ export class Physics {
           entity.setVelocityX(0);
           entity.setPosition(
             new Position(
-              staticEntity.collider.left - entity.collider.width / 2 - COLLIDER_GAP,
+              staticEntity.collider.left -
+                entity.collider.width / 2 -
+                COLLIDER_GAP,
               entity.position.y
             )
           );
@@ -99,7 +101,9 @@ export class Physics {
           entity.setVelocityX(0);
           entity.setPosition(
             new Position(
-              staticEntity.collider.right + entity.collider.width / 2 + COLLIDER_GAP,
+              staticEntity.collider.right +
+                entity.collider.width / 2 +
+                COLLIDER_GAP,
               entity.position.y
             )
           );

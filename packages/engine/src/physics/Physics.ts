@@ -1,10 +1,6 @@
 import { Entity } from '../entities';
-import { Collider } from './Collider';
 import { Position } from './Position';
 import { Vector2 } from './Vector2';
-
-const horizontalVector = new Vector2(1, 0);
-const verticalVector = new Vector2(0, 1);
 
 export class Physics {
   gravity = 0.98;
@@ -85,16 +81,27 @@ export class Physics {
   checkCollisions(entity: Entity, deltaTime: number) {
     for (let i = 0; i < this.staticEntities.length; i++) {
       const staticEntity = this.staticEntities[i];
-      const nextEntityCollider = entity.collider.getNextCollider(deltaTime, entity.velocity);
-      if (
-        nextEntityCollider.isCollidingWith(staticEntity.collider)
-      ) {
+      const nextEntityCollider = entity.collider.getNextCollider(
+        deltaTime,
+        entity.velocity
+      );
+      if (nextEntityCollider.isCollidingWith(staticEntity.collider)) {
         if (entity.velocity.x > 0) {
           entity.setVelocityX(0);
-          entity.setPosition(new Position(staticEntity.collider.left - entity.collider.width / 2, entity.position.y));
+          entity.setPosition(
+            new Position(
+              staticEntity.collider.left - entity.collider.width / 2,
+              entity.position.y
+            )
+          );
         } else if (entity.velocity.x < 0) {
           entity.setVelocityX(0);
-          entity.setPosition(new Position(staticEntity.collider.right + entity.collider.width / 2, entity.position.y));
+          entity.setPosition(
+            new Position(
+              staticEntity.collider.right + entity.collider.width / 2,
+              entity.position.y
+            )
+          );
         }
       }
     }

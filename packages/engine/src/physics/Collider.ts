@@ -80,7 +80,8 @@ export class Collider {
     velocity: Vector2 = new Vector2(0, 0),
     otherVelocity: Vector2 = new Vector2(0, 0)
   ) {
-    return this.getNextCollider(delta, velocity)
-            .isCollidingWith(other.getNextCollider(delta, otherVelocity));
+    return this.getNextCollider(delta, velocity).isCollidingWith(
+      other.getNextCollider(delta, otherVelocity)
+    );
   }
 }

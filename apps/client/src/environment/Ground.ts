@@ -1,6 +1,6 @@
-import { Position } from 'engine/src/Position';
+import { Position } from 'engine/src/physics';
 import { Container } from 'pixi.js';
-import { Block } from 'engine/src/Block';
+import { Block } from 'engine/src/entities';
 import { getTexture } from 'utils/src/getTexture';
 import textureImage from 'assets/environment/industrial-zone/tiles/IndustrialTile_02.png';
 

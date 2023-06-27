@@ -1,7 +1,7 @@
 import { Creature, CreatureAnimations } from './Creature';
-import { Controller } from './Controller';
+import { Controller } from '../control';
 import { Container } from 'pixi.js';
-import { Position } from './Position';
+import { Position } from '../physics';
 
 export abstract class PlayableCreature extends Creature {
   constructor(options: {

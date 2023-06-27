@@ -1,8 +1,6 @@
-import { Vector2 } from './Vector2';
-import { Position } from './Position';
+import { Vector2, Position, Collider } from '../physics';
 import { Direction } from './Direction';
 import { Container, AnimatedSprite, Sprite } from 'pixi.js';
-import { Collider } from './Collider';
 
 export abstract class Entity {
   direction: Direction = Direction.RIGHT;

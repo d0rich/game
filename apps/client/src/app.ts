@@ -1,9 +1,8 @@
 import { Application, Graphics } from 'pixi.js';
 import { Robot } from './bosses/Robot';
-import { Controller } from 'engine/src/Controller';
-import { Position } from 'engine/src/Position';
+import { Controller } from 'engine/src/control';
+import { Position, Physics } from 'engine/src/physics';
 import { Ground } from './environment/Ground';
-import { Physics } from 'engine/src/Physics';
 
 export async function setupApp(element: HTMLElement) {
   const app = new Application({ width: 640, height: 360 });

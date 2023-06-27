@@ -1,4 +1,4 @@
-import { Entity } from './Entity';
+import { Entity } from '../Entity';
 import { Vector2 } from './Vector2';
 
 const horizontalVector = new Vector2(1, 0);

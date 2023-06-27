@@ -1,8 +1,7 @@
-import { Position } from './Position';
 import { Direction } from './Direction';
 import { Container, type AnimatedSprite } from 'pixi.js';
 import { Entity } from './Entity';
-import { Collider } from './Collider';
+import { Collider, Position } from '../physics';
 
 export type CreatureAnimations = {
   idle: AnimatedSprite;

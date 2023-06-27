@@ -1,9 +1,8 @@
 import { Container } from 'pixi.js';
-import { Position } from 'engine/src/Position';
+import { Position, Vector2 } from 'engine/src/physics';
 import getAnimation from 'utils/src/getAnimation';
-import type { Controller } from 'engine/src/Controller';
-import { CreatureAnimations } from 'engine/src/Creature';
-import { PlayableCreature } from 'engine/src/PlayableCreature';
+import type { Controller } from 'engine/src/control';
+import { CreatureAnimations, PlayableCreature } from 'engine/src/entities';
 
 import idleFrames from 'assets/bosses/robot/sprites/Idle.png';
 import walkFrames from 'assets/bosses/robot/sprites/Walk.png';
@@ -11,7 +10,6 @@ import attack1Frames from 'assets/bosses/robot/sprites/Attack1.png';
 import attack2Frames from 'assets/bosses/robot/sprites/Attack2.png';
 import attack3Frames from 'assets/bosses/robot/sprites/Attack3.png';
 import specialFrames from 'assets/bosses/robot/sprites/Special.png';
-import { Vector2 } from 'engine/src/Vector2';
 
 const animationOptions: Parameters<typeof getAnimation>[1] = {
   height: 64,

@@ -1,7 +1,6 @@
 import { Container, BaseTexture, TilingSprite } from 'pixi.js';
-import { Position } from './Position';
+import { Position, Collider } from '../physics';
 import { Entity } from './Entity';
-import { Collider } from './Collider';
 
 export abstract class Block extends Entity {
   constructor(options: {

@@ -22,7 +22,7 @@ export class Physics {
   update(deltaTime: number) {
     for (let i = 0; i < this.gravitableEntities.length; i++) {
       const entity = this.gravitableEntities[i];
-      entity.setVelocity(entity.outsideVelocity.add(0, -this.gravity * deltaTime));
+      entity.setVelocity(entity.outerVelocity.add(0, -this.gravity * deltaTime));
     }
     this.checkCollisions(this.mainEntity, deltaTime);
     // console.log(this.mainEntity.velocity);
@@ -40,11 +40,11 @@ export class Physics {
           entity.velocity
         )
       ) {
-        entity.outsideVelocity = new Vector2(0, 0);
+        entity.outerVelocity = new Vector2(0, 0);
         if (Math.abs(entity.velocity.x) > Math.abs(entity.velocity.y)) {
-          entity.outsideVelocity = entity.velocity.project(verticalVector).multiplyByScalar(-1);
+          entity.outerVelocity = entity.velocity.project(verticalVector).multiplyByScalar(-1);
         } else {
-          entity.outsideVelocity = entity.velocity.project(horizontalVector).multiplyByScalar(-1);
+          entity.outerVelocity = entity.velocity.project(horizontalVector).multiplyByScalar(-1);
         }
       }
     }

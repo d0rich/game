@@ -51,7 +51,7 @@ export class Robot extends PlayableCreature {
     });
     controller.addEventListener('up:start', () => {
       if (this.velocity.y === 0) {
-        this.outsideVelocity = this.outsideVelocity.add(new Vector2(0, 20));
+        this.outerVelocity = this.outerVelocity.add(new Vector2(0, 20));
       }
     });
   }

@@ -4,7 +4,7 @@ import { Container, AnimatedSprite, Sprite } from 'pixi.js';
 
 export abstract class Entity {
   direction: Direction = Direction.RIGHT;
-  outsideVelocity: Vector2 = new Vector2(0, 0);
+  outerVelocity: Vector2 = new Vector2(0, 0);
   readonly container: Container = new Container();
   protected ownVelocity: Vector2 = new Vector2(0, 0);
   protected currentSprite: Sprite | null = null;
@@ -21,7 +21,7 @@ export abstract class Entity {
   }
 
   get velocity() {
-    return this.outsideVelocity.add(this.ownVelocity);
+    return this.outerVelocity.add(this.ownVelocity);
   }
 
   get position() {
@@ -54,19 +54,19 @@ export abstract class Entity {
   }
 
   setVelocity(velocity: Vector2) {
-    this.outsideVelocity = velocity;
+    this.outerVelocity = velocity;
   }
 
   setVelocityX(x: number) {
-    this.outsideVelocity = new Vector2(x, this.outsideVelocity.y);
+    this.outerVelocity = new Vector2(x, this.outerVelocity.y);
   }
 
   setVelocityY(y: number) {
-    this.outsideVelocity = new Vector2(this.outsideVelocity.x, y);
+    this.outerVelocity = new Vector2(this.outerVelocity.x, y);
   }
 
   resetVelocity() {
-    this.outsideVelocity = new Vector2(0, 0);
+    this.outerVelocity = new Vector2(0, 0);
   }
 
   switchSprite(sprite: Sprite) {

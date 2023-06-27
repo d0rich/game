@@ -2,6 +2,8 @@ import { Entity } from '../entities';
 import { Position } from './Position';
 import { Vector2 } from './Vector2';
 
+const COLLIDER_GAP = 1;
+
 export class Physics {
   gravity = 0.98;
   gravitableEntities: Entity[] = [];
@@ -29,7 +31,6 @@ export class Physics {
       }
     }
     this.checkCollisions(this.mainEntity, deltaTime);
-    // console.log(this.mainEntity.velocity);
     this.mainEntity.onUpdate(deltaTime);
   }
 
@@ -90,7 +91,7 @@ export class Physics {
           entity.setVelocityX(0);
           entity.setPosition(
             new Position(
-              staticEntity.collider.left - entity.collider.width / 2,
+              staticEntity.collider.left - entity.collider.width / 2 - COLLIDER_GAP,
               entity.position.y
             )
           );
@@ -98,7 +99,7 @@ export class Physics {
           entity.setVelocityX(0);
           entity.setPosition(
             new Position(
-              staticEntity.collider.right + entity.collider.width / 2,
+              staticEntity.collider.right + entity.collider.width / 2 + COLLIDER_GAP,
               entity.position.y
             )
           );

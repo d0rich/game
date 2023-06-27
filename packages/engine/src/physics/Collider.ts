@@ -1,7 +1,6 @@
 import { Position } from './Position';
 import { Vector2 } from './Vector2';
-import { Creature } from '../Creature';
-import { Block } from '../entities/Block';
+import { Block, Creature } from '../entities';
 
 export class Collider {
   static fromCreature(creature: Creature) {

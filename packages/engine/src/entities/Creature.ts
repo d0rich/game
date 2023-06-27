@@ -41,7 +41,7 @@ export abstract class Creature extends Entity {
     if (this.velocity.y !== 0) {
       this.switchAnimation('jump');
     } else {
-       this.switchAnimation(this.ownVelocity.x === 0 ? 'idle' : 'walk');
+      this.switchAnimation(this.ownVelocity.x === 0 ? 'idle' : 'walk');
     }
   }
 

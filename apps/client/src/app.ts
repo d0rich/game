@@ -21,9 +21,17 @@ export async function setupApp(element: HTMLElement) {
   const ground = new Ground({
     stage: app.stage,
     position: new Position(0, 0),
+    width: 640,
+    height: 64,
+  });
+  const ground2 = new Ground({
+    stage: app.stage,
+    position: new Position(200, 64),
+    width: 640,
+    height: 128,
   });
   physics.registerGravitableEntities(robot);
-  physics.registerStaticEntities(ground);
+  physics.registerStaticEntities(ground, ground2);
   app.ticker.add((delta) => {
     physics.update(delta);
   });

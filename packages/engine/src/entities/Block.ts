@@ -7,11 +7,13 @@ export abstract class Block extends Entity {
     texture: BaseTexture;
     position?: Position;
     stage?: Container;
+    width: number;
+    height: number;
   }) {
     super(options);
     const sprite = TilingSprite.from(options.texture, {
-      width: 560,
-      height: 64,
+      width: options.width,
+      height: options.height,
     });
     this.switchSprite(sprite);
     this.container.pivot.y = this.container.height;

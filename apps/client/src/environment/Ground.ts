@@ -7,11 +7,18 @@ import textureImage from 'assets/environment/industrial-zone/tiles/IndustrialTil
 const texture = await getTexture(textureImage);
 
 export class Ground extends Block {
-  constructor(options: { position?: Position; stage?: Container }) {
+  constructor(options: {
+    position?: Position;
+    stage?: Container;
+    width: number;
+    height: number;
+  }) {
     super({
       position: options?.position,
       stage: options?.stage,
       texture: texture,
+      width: options.width,
+      height: options.height,
     });
   }
 }

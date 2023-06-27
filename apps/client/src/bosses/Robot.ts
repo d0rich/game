@@ -6,9 +6,9 @@ import { CreatureAnimations, PlayableCreature } from 'engine/src/entities';
 
 import idleFrames from 'assets/bosses/robot/sprites/Idle.png';
 import walkFrames from 'assets/bosses/robot/sprites/Walk.png';
-import attack1Frames from 'assets/bosses/robot/sprites/Attack1.png';
-import attack2Frames from 'assets/bosses/robot/sprites/Attack2.png';
-import attack3Frames from 'assets/bosses/robot/sprites/Attack3.png';
+// import attack1Frames from 'assets/bosses/robot/sprites/Attack1.png';
+// import attack2Frames from 'assets/bosses/robot/sprites/Attack2.png';
+// import attack3Frames from 'assets/bosses/robot/sprites/Attack3.png';
 import specialFrames from 'assets/bosses/robot/sprites/Special.png';
 
 const animationOptions: Parameters<typeof getAnimation>[1] = {

@@ -8,7 +8,7 @@ import { Position, Physics } from 'engine/src/physics';
 import { Arena } from './environment/Arena';
 
 export async function setupApp(element: HTMLElement) {
-  const app = new Application({ width: 640, height: 360 });
+  const app = new Application({ width: 640, height: 320 });
   element.appendChild(app.view as HTMLCanvasElement);
   const arena = new Arena();
   const main = new Cyborg({

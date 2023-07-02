@@ -1,5 +1,7 @@
 import { BaseTexture, Container, Graphics, Texture } from 'pixi.js';
 import { Ground } from './Ground';
+import { Wall } from './Wall';
+import { Platform } from './Platform';
 import { Position } from 'engine/src/physics';
 import { Entity } from 'engine/src/entities';
 import { getTexture } from 'utils/src/getTexture';
@@ -32,13 +34,42 @@ export class Arena {
         stage: this.container,
         position: new Position(0, 0),
         width: 640,
-        height: 64,
-      }),
-      new Ground({
+        height: 32,
+      })
+    );
+    this.staticEntities.push(
+      new Wall({
         stage: this.container,
-        position: new Position(200, 64),
-        width: 640,
-        height: 128,
+        position: new Position(0, 32),
+        width: 32,
+        height: 320 - 32,
+      }),
+      new Wall({
+        stage: this.container,
+        position: new Position(640 - 32, 32),
+        width: 32,
+        height: 320 - 32,
+      })
+    );
+
+    this.staticEntities.push(
+      new Platform({
+        stage: this.container,
+        position: new Position(32 * 3, 32 * 3),
+        width: 32 * 3,
+        height: 32,
+      }),
+      new Platform({
+        stage: this.container,
+        position: new Position(32 * 7, 32 * 6),
+        width: 32 * 6,
+        height: 32,
+      }),
+      new Platform({
+        stage: this.container,
+        position: new Position(32 * 14, 32 * 3),
+        width: 32 * 3,
+        height: 32,
       })
     );
   }
@@ -47,7 +78,7 @@ export class Arena {
     const setTexture = (texture: BaseTexture) => {
       const bg = new Graphics();
       bg.beginTextureFill({ texture: Texture.from(texture) });
-      bg.drawRect(0, 0, 640, 360);
+      bg.drawRect(0, 0, 640, 320);
       bg.zIndex = -1;
       this.container.addChild(bg);
     };

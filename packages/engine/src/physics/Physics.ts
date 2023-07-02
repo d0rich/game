@@ -59,11 +59,12 @@ export class Physics {
           entity.velocity
         ) &&
         // If entity is going down
-        entity.velocity.y < 0 &&
-        // If entity will be close enough to floor
-        staticEntity.collider.top -
+        entity.velocity.y < 0 && // If entity will be close enough to floor
+        (staticEntity.collider.top -
           (entity.collider.bottom + entity.velocity.y * deltaTime) <=
-          entity.collider.height / 2
+          entity.collider.height / 2 ||
+          // If entity was above possible floor
+          entity.collider.bottom > staticEntity.collider.top)
       ) {
         // Set entity on floor
         entity.setPosition(

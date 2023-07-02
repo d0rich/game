@@ -83,7 +83,19 @@ export class Physics {
         entity.velocity
       );
       if (nextEntityCollider.isCollidingWith(staticEntity.collider)) {
-        if (entity.velocity.x > 0) {
+        if (
+          entity.velocity.y > 0 &&
+          entity.collider.left >= staticEntity.collider.left &&
+          entity.collider.right <= staticEntity.collider.right
+        ) {
+          entity.setVelocityY(0);
+          entity.setPosition(
+            new Position(
+              entity.position.x,
+              staticEntity.collider.bottom - entity.collider.height
+            )
+          );
+        } else if (entity.velocity.x > 0) {
           entity.setVelocityX(0);
           entity.setPosition(
             new Position(

@@ -1,7 +1,6 @@
-import { Container } from 'pixi.js';
 import { Controller } from '../control';
 import { PlayableCreature } from './PlayableCreature';
-import { Collider, Position, Vector2, CombatManager } from '../physics';
+import { Collider, Vector2, CombatManager } from '../physics';
 import { Direction } from '.';
 
 export abstract class Character extends PlayableCreature {

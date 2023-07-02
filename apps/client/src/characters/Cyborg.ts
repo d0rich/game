@@ -1,12 +1,19 @@
 import { Container } from 'pixi.js';
-import { Collider, Position, Vector2 } from 'engine/src/physics';
+import { Position } from 'engine/src/physics';
 import getAnimation from 'utils/src/getAnimation';
 import type { Controller } from 'engine/src/control';
-import { CreatureAnimations, PlayableCreature } from 'engine/src/entities';
+import { CreatureAnimations, Character } from 'engine/src/entities';
 
 import idleFrames from 'assets/characters/cyborg/sprites/Cyborg_idle.png';
 import walkFrames from 'assets/characters/cyborg/sprites/Cyborg_run.png';
 import jumpFrames from 'assets/characters/cyborg/sprites/Cyborg_jump.png';
+import walkAttackFrames from 'assets/characters/cyborg/sprites/Cyborg_run_attack.png';
+import attack1Frames from 'assets/characters/cyborg/sprites/Cyborg_attack1.png';
+import attack2Frames from 'assets/characters/cyborg/sprites/Cyborg_attack2.png';
+import attack3Frames from 'assets/characters/cyborg/sprites/Cyborg_attack3.png';
+import punchFrames from 'assets/characters/cyborg/sprites/Cyborg_punch.png';
+import hurtFrames from 'assets/characters/cyborg/sprites/Cyborg_hurt.png';
+import deathFrames from 'assets/characters/cyborg/sprites/Cyborg_death.png';
 
 const animationOptions: Parameters<typeof getAnimation>[1] = {
   height: 36,
@@ -17,9 +24,16 @@ const cyborgAnimations: CreatureAnimations = {
   idle: await getAnimation(idleFrames, animationOptions),
   walk: await getAnimation(walkFrames, animationOptions),
   jump: await getAnimation(jumpFrames, animationOptions),
+  attack1: await getAnimation(attack1Frames, animationOptions),
+  attack2: await getAnimation(attack2Frames, animationOptions),
+  attack3: await getAnimation(attack3Frames, animationOptions),
+  punch: await getAnimation(punchFrames, animationOptions),
+  walkAttack: await getAnimation(walkAttackFrames, animationOptions),
+  hurt: await getAnimation(hurtFrames, animationOptions),
+  die: await getAnimation(deathFrames, animationOptions),
 };
 
-export class Cyborg extends PlayableCreature {
+export class Cyborg extends Character {
   constructor(options?: {
     position?: Position;
     stage?: Container;
@@ -30,31 +44,6 @@ export class Cyborg extends PlayableCreature {
       stage: options?.stage,
       controller: options?.controller,
       animations: cyborgAnimations,
-    });
-  }
-
-  get collider(): Collider {
-    return Collider.fromCreature(this, 18);
-  }
-
-  protected setupController(controller: Controller) {
-    const SPEED = 3;
-    controller.addEventListener('left:start', () => {
-      this.ownVelocity = this.ownVelocity.add(new Vector2(-SPEED, 0));
-    });
-    controller.addEventListener('left:stop', () => {
-      this.ownVelocity = this.ownVelocity.add(new Vector2(SPEED, 0));
-    });
-    controller.addEventListener('right:start', () => {
-      this.ownVelocity = this.ownVelocity.add(new Vector2(SPEED, 0));
-    });
-    controller.addEventListener('right:stop', () => {
-      this.ownVelocity = this.ownVelocity.add(new Vector2(-SPEED, 0));
-    });
-    controller.addEventListener('up:start', () => {
-      if (this.velocity.y === 0) {
-        this.outerVelocity = this.outerVelocity.add(new Vector2(0, SPEED * 5));
-      }
     });
   }
 }

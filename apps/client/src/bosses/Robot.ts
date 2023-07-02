@@ -42,16 +42,16 @@ export class Robot extends PlayableCreature {
 
   protected setupController(controller: Controller) {
     controller.addEventListener('left:start', () => {
-      this.ownVelocity = this.ownVelocity.add(new Vector2(-2, 0));
+      this._ownVelocity = this._ownVelocity.add(new Vector2(-2, 0));
     });
     controller.addEventListener('left:stop', () => {
-      this.ownVelocity = this.ownVelocity.add(new Vector2(2, 0));
+      this._ownVelocity = this._ownVelocity.add(new Vector2(2, 0));
     });
     controller.addEventListener('right:start', () => {
-      this.ownVelocity = this.ownVelocity.add(new Vector2(2, 0));
+      this._ownVelocity = this._ownVelocity.add(new Vector2(2, 0));
     });
     controller.addEventListener('right:stop', () => {
-      this.ownVelocity = this.ownVelocity.add(new Vector2(-2, 0));
+      this._ownVelocity = this._ownVelocity.add(new Vector2(-2, 0));
     });
     controller.addEventListener('up:start', () => {
       if (this.velocity.y === 0) {

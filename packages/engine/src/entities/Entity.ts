@@ -6,7 +6,7 @@ export abstract class Entity {
   direction: Direction = Direction.RIGHT;
   outerVelocity: Vector2 = new Vector2(0, 0);
   readonly container: Container = new Container();
-  protected ownVelocity: Vector2 = new Vector2(0, 0);
+  protected _ownVelocity: Vector2 = new Vector2(0, 0);
   protected currentSprite: Sprite | null = null;
 
   constructor(options: { position?: Position; stage?: Container }) {
@@ -20,8 +20,12 @@ export abstract class Entity {
     }
   }
 
+  get ownVelocity() {
+    return this._ownVelocity;
+  }
+
   get velocity() {
-    return this.outerVelocity.add(this.ownVelocity);
+    return this.outerVelocity.add(this._ownVelocity);
   }
 
   get position() {

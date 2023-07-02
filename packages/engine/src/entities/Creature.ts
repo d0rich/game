@@ -7,10 +7,18 @@ export type CreatureAnimations = {
   idle: AnimatedSprite;
   walk: AnimatedSprite;
   jump: AnimatedSprite;
+  punch: AnimatedSprite;
+  walkAttack: AnimatedSprite;
+  attack1: AnimatedSprite;
+  attack2: AnimatedSprite;
+  attack3: AnimatedSprite;
+  hurt: AnimatedSprite;
+  die: AnimatedSprite;
 };
 
 export abstract class Creature extends Entity {
   state: keyof CreatureAnimations = 'idle';
+  blockAnimation = false;
   private animations: CreatureAnimations;
 
   constructor(options: {
@@ -32,16 +40,24 @@ export abstract class Creature extends Entity {
 
   onUpdate(delta: number) {
     super.onUpdate(delta);
-    if (this.ownVelocity.x > 0) {
+    if (this._ownVelocity.x > 0) {
       this.direction = Direction.RIGHT;
-    } else if (this.ownVelocity.x < 0) {
+    } else if (this._ownVelocity.x < 0) {
       this.direction = Direction.LEFT;
     }
     this.container.scale.x = this.direction === Direction.RIGHT ? 1 : -1;
+    // If animation should not be switched
+    if (this.blockAnimation) {
+      return;
+    }
     if (this.velocity.y !== 0) {
       this.switchAnimation('jump');
     } else {
-      this.switchAnimation(this.ownVelocity.x === 0 ? 'idle' : 'walk');
+      if (this._ownVelocity.x === 0) {
+        this.switchAnimation('idle');
+      } else {
+        this.switchAnimation('walk');
+      }
     }
   }
 
@@ -49,14 +65,20 @@ export abstract class Creature extends Entity {
     state: keyof CreatureAnimations,
     options?: {
       forceUpdate?: boolean;
+      oneTime?: boolean;
+      onComplete?: () => void;
     }
   ) {
     if (this.state === state && !options?.forceUpdate) {
       return;
     }
     const newSprite = this.animations[state];
-    newSprite.animationSpeed = 1 / 12;
+    newSprite.animationSpeed = 1 / 5;
     newSprite.play();
+    if (options?.oneTime) {
+      newSprite.loop = false;
+      newSprite.onComplete = options.onComplete;
+    }
     this.switchSprite(newSprite);
     this.state = state;
   }

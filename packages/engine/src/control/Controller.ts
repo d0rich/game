@@ -4,22 +4,30 @@ export class Controller extends EventTarget {
   constructor() {
     super();
     window.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowLeft' && !this.isLeftPressed) {
+      if (event.code === 'ArrowLeft' && !this.isLeftPressed) {
         this.leftStart();
-      } else if (event.key === 'ArrowRight' && !this.isRightPressed) {
+      } else if (event.code === 'ArrowRight' && !this.isRightPressed) {
         this.rightStart();
-      } else if (event.key === 'ArrowUp' && !this.isUpPressed) {
+      } else if (event.code === 'ArrowUp' && !this.isUpPressed) {
         this.upStart();
+      } else if (event.code === 'KeyA') {
+        this.attack1();
+      } else if (event.code === 'KeyS') {
+        this.attack2();
+      } else if (event.code === 'KeyD') {
+        this.attack3();
+      } else if (event.code === 'KeyF') {
+        this.punch();
       }
-      this.keysPressed.add(event.key);
+      this.keysPressed.add(event.code);
     });
     window.addEventListener('keyup', (event) => {
-      this.keysPressed.delete(event.key);
-      if (event.key === 'ArrowLeft') {
+      this.keysPressed.delete(event.code);
+      if (event.code === 'ArrowLeft') {
         this.leftStop();
-      } else if (event.key === 'ArrowRight') {
+      } else if (event.code === 'ArrowRight') {
         this.rightStop();
-      } else if (event.key === 'ArrowUp') {
+      } else if (event.code === 'ArrowUp') {
         this.upStop();
       }
     });
@@ -59,5 +67,21 @@ export class Controller extends EventTarget {
 
   private upStop() {
     this.dispatchEvent(new Event('up:stop'));
+  }
+
+  private attack1() {
+    this.dispatchEvent(new Event('attack1'));
+  }
+
+  private attack2() {
+    this.dispatchEvent(new Event('attack2'));
+  }
+
+  private attack3() {
+    this.dispatchEvent(new Event('attack3'));
+  }
+
+  private punch() {
+    this.dispatchEvent(new Event('punch'));
   }
 }

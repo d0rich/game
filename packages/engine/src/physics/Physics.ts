@@ -6,6 +6,7 @@ const COLLIDER_GAP = 1;
 
 export class Physics {
   gravity = 0.98;
+  friction = 0.3;
   gravitableEntities: Entity[] = [];
   staticEntities: Entity[] = [];
   floorsMap: Map<Entity, Entity> = new Map();
@@ -24,7 +25,22 @@ export class Physics {
     for (let i = 0; i < this.gravitableEntities.length; i++) {
       const entity = this.gravitableEntities[i];
       const floor = this.checkFloor(entity, deltaTime);
-      if (!floor) {
+      if (floor) {
+        // Apply friction
+        const deltaVelocity = this.friction * deltaTime;
+        if (Math.abs(entity.outerVelocity.x) < deltaVelocity) {
+          entity.setVelocityX(0);
+        } else if (entity.outerVelocity.x > 0) {
+          entity.setVelocity(
+            entity.outerVelocity.subtract(this.friction * deltaTime, 0)
+          );
+        } else if (entity.outerVelocity.x < 0) {
+          entity.setVelocity(
+            entity.outerVelocity.add(this.friction * deltaTime, 0)
+          );
+        }
+      } else {
+        // Apply graviaty
         entity.setVelocity(
           entity.outerVelocity.add(0, -this.gravity * deltaTime)
         );

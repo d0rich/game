@@ -29,9 +29,9 @@ export class Physics {
           entity.outerVelocity.add(0, -this.gravity * deltaTime)
         );
       }
+      this.checkCollisions(entity, deltaTime);
+      entity.onUpdate(deltaTime);
     }
-    this.checkCollisions(this.mainEntity, deltaTime);
-    this.mainEntity.onUpdate(deltaTime);
   }
 
   checkFloor(entity: Entity, deltaTime: number) {

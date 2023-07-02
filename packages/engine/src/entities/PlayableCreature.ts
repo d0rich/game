@@ -4,6 +4,9 @@ import { Container } from 'pixi.js';
 import { Position } from '../physics';
 
 export abstract class PlayableCreature extends Creature {
+  protected controller: Controller | null = null;
+  protected controllerListeners: Record<string, () => void> = {};
+
   constructor(options: {
     position?: Position;
     stage?: Container;
@@ -17,7 +20,17 @@ export abstract class PlayableCreature extends Creature {
     });
     if (options?.controller) {
       this.setupController(options.controller);
+      this.controller = options.controller;
     }
+  }
+
+  protected disconnectController() {
+    const controller = this.controller;
+    if (!controller) return;
+    Object.entries(this.controllerListeners).forEach(([key, listener]) => {
+      controller.removeEventListener(key, listener);
+    });
+    this.controllerListeners = {};
   }
 
   protected abstract setupController(controller: Controller): void;

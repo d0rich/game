@@ -29,19 +29,16 @@ export async function setupApp(element: HTMLElement) {
     controller: controller,
   });
   players.set(id, main);
-  const doll = new Punk({
-    stage: arena.container,
-    position: new Position(100, 50),
-  });
   const physics = new Physics(main);
   const combatManager = new CombatManager();
-  physics.registerGravitableEntities(main, doll);
+  physics.registerGravitableEntities(main);
   physics.registerStaticEntities(...arena.staticEntities);
-  combatManager.addPlayers(main, doll);
+  combatManager.addPlayers(main);
   app.stage.addChild(arena.container);
   app.ticker.add((delta) => {
     physics.update(delta);
   });
+  initRemotePositionUpdate(id, main);
   ws.addEventListener('message', (event) => {
     const message = event.data;
     const action = message.toString();
@@ -51,14 +48,7 @@ export async function setupApp(element: HTMLElement) {
       if (playerId === id) {
         return;
       }
-      const newPlayer = new Biker({
-        stage: arena.container,
-        position: new Position(100, 100),
-        controller: new RemoteController(playerId, ws),
-      });
-      players.set(playerId, newPlayer);
-      physics.registerGravitableEntities(newPlayer);
-      combatManager.addPlayers(newPlayer);
+      connectRemotePlayer(playerId);
     } else if (action.startsWith(`player:coords:`)) {
       const [playerId, x, y] = action.replace(`player:coords:`, '').split(':');
       if (playerId === id) {
@@ -69,16 +59,30 @@ export async function setupApp(element: HTMLElement) {
       if (player) {
         player.setPosition(position);
       } else {
-        const newPlayer = new Biker({
-          stage: arena.container,
-          position: position,
-          controller: new RemoteController(playerId, ws),
-        });
-        players.set(playerId, newPlayer);
-        physics.registerGravitableEntities(newPlayer);
-        combatManager.addPlayers(newPlayer);
+        connectRemotePlayer(playerId, position);
       }
     }
   });
   return app;
+
+  function initRemotePositionUpdate(id: string, player: Character) {
+    setInterval(() => {
+      ws.send(`player:coords:${id}:${player.position.x}:${player.position.y}`);
+    }, 1000);
+  }
+  function connectRemotePlayer(
+    playerId: string,
+    position: Position = new Position(100, 100)
+  ) {
+    const newPlayer = new Biker({
+      stage: arena.container,
+      position: position,
+      controller: new RemoteController(playerId, ws),
+    });
+    players.set(playerId, newPlayer);
+    physics.registerGravitableEntities(newPlayer);
+    combatManager.addPlayers(newPlayer);
+    initRemotePositionUpdate(playerId, newPlayer);
+    return newPlayer;
+  }
 }

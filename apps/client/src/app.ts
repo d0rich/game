@@ -1,5 +1,4 @@
 import { Application } from 'pixi.js';
-import { Punk } from './characters/Punk';
 import { Cyborg } from './characters/Cyborg';
 import { Biker } from './characters/Biker';
 import {

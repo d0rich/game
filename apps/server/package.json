@@ -1,0 +1,11 @@
+{
+  "name": "server",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon src/index.ts"
+  },
+  "dependencies": {
+    "ws": "^8.13.0"
+  }
+}

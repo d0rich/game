@@ -8,5 +8,9 @@
     "format:js": "eslint --ext .js,.jsx,.ts,.tsx --ignore-path ../../.gitignore src --fix",
     "format:prettier": "prettier --ignore-path ../../.gitignore --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "format": "npm run format:js && npm run format:prettier"
+  },
+  "dependencies": {
+    "@types/ws": "^8.5.5",
+    "ws": "^8.13.0"
   }
 }

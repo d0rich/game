@@ -83,11 +83,7 @@ export abstract class Character extends PlayableCreature {
       },
       onFrameChange: (frame) => {
         if (!(animation === 'attack1' ? frame === 4 : frame === 2)) return;
-        this.combatManager
-          ?.searchHitTargets(this, this.collider)
-          .forEach((player) => {
-            player.takeDamage(10);
-          });
+        this.combatManager?.hit(this, 10);
       },
     });
   }
@@ -103,11 +99,7 @@ export abstract class Character extends PlayableCreature {
       },
       onFrameChange: (frame) => {
         if (frame !== 4 && frame !== 7) return;
-        this.combatManager
-          ?.searchHitTargets(this, this.collider)
-          .forEach((player) => {
-            player.takeDamage(7);
-          });
+        this.combatManager?.hit(this, 7);
       },
     });
   }
@@ -123,11 +115,7 @@ export abstract class Character extends PlayableCreature {
       },
       onFrameChange: (frame) => {
         if (frame !== 4 && frame !== 6) return;
-        this.combatManager
-          ?.searchHitTargets(this, this.collider)
-          .forEach((player) => {
-            player.takeDamage(10);
-          });
+        this.combatManager?.hit(this, 10);
       },
     });
   }
@@ -143,17 +131,12 @@ export abstract class Character extends PlayableCreature {
       },
       onFrameChange: (frame) => {
         if (frame !== 4) return;
-        this.combatManager
-          ?.searchHitTargets(this, this.collider)
-          .forEach((player) => {
-            player.takeDamage(5);
-            player.outerVelocity = player.outerVelocity.add(
-              new Vector2(
-                this.direction === Direction.LEFT ? -3 : 3,
-                this.speed * 2
-              )
-            );
-          });
+        this.combatManager?.hit(this, 5, {
+          knockback: new Vector2(
+            this.direction === Direction.LEFT ? -3 : 3,
+            this.speed * 2
+          ),
+        });
       },
     });
   }

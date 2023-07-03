@@ -39,8 +39,8 @@ export async function setupApp(element: HTMLElement) {
   app.ticker.add((delta) => {
     physics.update(delta);
   });
-  ws.addEventListener('message', (message) => {
-    console.log(message);
+  ws.addEventListener('message', (event) => {
+    const message = event.data;
     const action = message.toString();
     if (!action.startsWith(`player:new:`)) {
       return;
@@ -51,7 +51,7 @@ export async function setupApp(element: HTMLElement) {
     }
     const newPlayer = new Biker({
       stage: arena.container,
-      position: new Position(100, 50),
+      position: new Position(100, 100),
       controller: new RemoteController(playerId, ws),
     });
     physics.registerGravitableEntities(newPlayer);

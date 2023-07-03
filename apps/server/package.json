@@ -3,9 +3,18 @@
   "private": true,
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "lint:js": "eslint --ext .js,.jsx,.ts,.tsx --ignore-path ../../.gitignore src",
+    "lint:prettier": "prettier --ignore-path ../../.gitignore --check \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+    "lint": "npm run lint:js && npm run lint:prettier",
+    "format:js": "eslint --ext .js,.jsx,.ts,.tsx --ignore-path ../../.gitignore src --fix",
+    "format:prettier": "prettier --ignore-path ../../.gitignore --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+    "format": "npm run format:js && npm run format:prettier"
   },
   "dependencies": {
     "ws": "^8.13.0"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.5"
   }
 }

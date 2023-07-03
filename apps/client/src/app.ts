@@ -25,7 +25,7 @@ export async function setupApp(element: HTMLElement) {
   new RemoteDispatcher(id, controller, ws);
   const main = new Cyborg({
     stage: arena.container,
-    position: new Position(50, 50),
+    position: new Position(320, 100),
     controller: controller,
   });
   players.set(id, main);
@@ -38,7 +38,7 @@ export async function setupApp(element: HTMLElement) {
   app.ticker.add((delta) => {
     physics.update(delta);
   });
-  initRemotePositionUpdate(id, main);
+  initRemotePositionUpdate(id);
   ws.addEventListener('message', (event) => {
     const message = event.data;
     const action = message.toString();
@@ -61,18 +61,33 @@ export async function setupApp(element: HTMLElement) {
       } else {
         connectRemotePlayer(playerId, position);
       }
+    } else if (action.startsWith(`player:leave:`)) {
+      const playerId = action.replace(`player:leave:`, '');
+      const player = players.get(playerId);
+      if (player) {
+        player.takeDamage(999999999);
+        players.delete(playerId);
+      }
     }
   });
+  ws.addEventListener('close', () => {
+    ws.send(`player:leave:${id}`);
+  })
+  window.onbeforeunload = () => { ws.send(`player:leave:${id}`); }
   return app;
 
-  function initRemotePositionUpdate(id: string, player: Character) {
+  function initRemotePositionUpdate(id: string) {
     setInterval(() => {
+      const player = players.get(id);
+      if (!player) {
+        return;
+      }
       ws.send(`player:coords:${id}:${player.position.x}:${player.position.y}`);
     }, 1000);
   }
   function connectRemotePlayer(
     playerId: string,
-    position: Position = new Position(100, 100)
+    position: Position = new Position(320, 100)
   ) {
     const newPlayer = new Biker({
       stage: arena.container,
@@ -82,7 +97,7 @@ export async function setupApp(element: HTMLElement) {
     players.set(playerId, newPlayer);
     physics.registerGravitableEntities(newPlayer);
     combatManager.addPlayers(newPlayer);
-    initRemotePositionUpdate(playerId, newPlayer);
+    initRemotePositionUpdate(playerId);
     return newPlayer;
   }
 }

@@ -22,6 +22,7 @@ export async function setupApp(element: HTMLElement) {
     ws.send(`player:new:${id}`);
   });
   const app = new Application({ width: 640, height: 320 });
+  element.innerHTML = '';
   element.appendChild(app.view as HTMLCanvasElement);
   const arena = new Arena();
   const controller = new LocalController();
@@ -76,9 +77,11 @@ export async function setupApp(element: HTMLElement) {
   ws.addEventListener('close', () => {
     ws.send(`player:leave:${id}`);
   });
-  window.onbeforeunload = () => {
+  window.addEventListener('beforeunload', () => {
     ws.send(`player:leave:${id}`);
-  };
+    ws.close();
+    app.destroy();
+  });
   return app;
 
   function initRemotePositionUpdate(id: string) {

@@ -1,6 +1,6 @@
 import { AnimatedSprite, Container } from 'pixi.js';
 import { Position } from 'engine/src/physics';
-import getAnimation from 'utils/src/getAnimation';
+import { getAnimation } from 'utils/src/getAnimation';
 import type { Controller } from 'engine/src/control';
 import { CreatureAnimations, Character } from 'engine/src/entities';
 

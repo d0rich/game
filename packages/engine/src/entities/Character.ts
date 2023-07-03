@@ -75,10 +75,14 @@ export abstract class Character extends PlayableCreature {
   protected attack1() {
     if (this.blockAnimation) return;
     this.blockAnimation = true;
-    this.switchAnimation(this.ownVelocity.x === 0 ? 'attack1' : 'walkAttack', {
+    const animation = this.ownVelocity.x === 0 ? 'attack1' : 'walkAttack';
+    this.switchAnimation(animation, {
       oneTime: true,
       onComplete: () => {
         this.blockAnimation = false;
+      },
+      onFrameChange: (frame) => {
+        if (!(animation === 'attack1' ? frame === 4 : frame === 2)) return;
         this.combatManager
           ?.searchHitTargets(this, this.collider)
           .forEach((player) => {
@@ -96,10 +100,13 @@ export abstract class Character extends PlayableCreature {
       oneTime: true,
       onComplete: () => {
         this.blockAnimation = false;
+      },
+      onFrameChange: (frame) => {
+        if (frame !== 4 && frame !== 7) return;
         this.combatManager
           ?.searchHitTargets(this, this.collider)
           .forEach((player) => {
-            player.takeDamage(15);
+            player.takeDamage(7);
           });
       },
     });
@@ -113,10 +120,13 @@ export abstract class Character extends PlayableCreature {
       oneTime: true,
       onComplete: () => {
         this.blockAnimation = false;
+      },
+      onFrameChange: (frame) => {
+        if (frame !== 4 && frame !== 6) return;
         this.combatManager
           ?.searchHitTargets(this, this.collider)
           .forEach((player) => {
-            player.takeDamage(20);
+            player.takeDamage(10);
           });
       },
     });
@@ -130,6 +140,9 @@ export abstract class Character extends PlayableCreature {
       oneTime: true,
       onComplete: () => {
         this.blockAnimation = false;
+      },
+      onFrameChange: (frame) => {
+        if (frame !== 4) return;
         this.combatManager
           ?.searchHitTargets(this, this.collider)
           .forEach((player) => {

@@ -67,6 +67,7 @@ export abstract class Creature extends Entity {
       forceUpdate?: boolean;
       oneTime?: boolean;
       onComplete?: () => void;
+      onFrameChange?: (frame: number) => void;
     }
   ) {
     if (this.state === state && !options?.forceUpdate) {
@@ -78,6 +79,7 @@ export abstract class Creature extends Entity {
     if (options?.oneTime) {
       newSprite.loop = false;
       newSprite.onComplete = options.onComplete;
+      newSprite.onFrameChange = options.onFrameChange;
     }
     this.switchSprite(newSprite);
     this.state = state;

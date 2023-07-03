@@ -1,4 +1,4 @@
-import { Container } from 'pixi.js';
+import { AnimatedSprite, Container } from 'pixi.js';
 import { Position } from 'engine/src/physics';
 import getAnimation from 'utils/src/getAnimation';
 import type { Controller } from 'engine/src/control';
@@ -20,7 +20,7 @@ const animationOptions: Parameters<typeof getAnimation>[1] = {
   width: 36,
 };
 
-const punkAnimations: CreatureAnimations = {
+const punkAnimations: Record<keyof CreatureAnimations, () => AnimatedSprite> = {
   idle: await getAnimation(idleFrames, animationOptions),
   walk: await getAnimation(walkFrames, animationOptions),
   jump: await getAnimation(jumpFrames, animationOptions),
@@ -43,7 +43,18 @@ export class Punk extends Character {
       position: options?.position,
       stage: options?.stage,
       controller: options?.controller,
-      animations: punkAnimations,
+      animations: {
+        idle: punkAnimations.idle(),
+        walk: punkAnimations.walk(),
+        jump: punkAnimations.jump(),
+        attack1: punkAnimations.attack1(),
+        attack2: punkAnimations.attack2(),
+        attack3: punkAnimations.attack3(),
+        punch: punkAnimations.punch(),
+        walkAttack: punkAnimations.walkAttack(),
+        hurt: punkAnimations.hurt(),
+        die: punkAnimations.die(),
+      },
     });
   }
 }

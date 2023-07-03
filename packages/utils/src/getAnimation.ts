@@ -43,6 +43,7 @@ export default async function getAnimation(
     },
   });
   await spritesheet.parse();
-  const animatedSprite = new AnimatedSprite(spritesheet.animations.animation);
-  return animatedSprite;
+  return function getAnimatedSprite() {
+    return new AnimatedSprite(spritesheet.animations.animation);
+  };
 }

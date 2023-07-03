@@ -72,8 +72,10 @@ export async function setupApp(element: HTMLElement) {
   });
   ws.addEventListener('close', () => {
     ws.send(`player:leave:${id}`);
-  })
-  window.onbeforeunload = () => { ws.send(`player:leave:${id}`); }
+  });
+  window.onbeforeunload = () => {
+    ws.send(`player:leave:${id}`);
+  };
   return app;
 
   function initRemotePositionUpdate(id: string) {

@@ -1,4 +1,4 @@
-import { Container } from 'pixi.js';
+import { Container, AnimatedSprite } from 'pixi.js';
 import { Position } from 'engine/src/physics';
 import getAnimation from 'utils/src/getAnimation';
 import type { Controller } from 'engine/src/control';
@@ -20,18 +20,19 @@ const animationOptions: Parameters<typeof getAnimation>[1] = {
   width: 36,
 };
 
-const cyborgAnimations: CreatureAnimations = {
-  idle: await getAnimation(idleFrames, animationOptions),
-  walk: await getAnimation(walkFrames, animationOptions),
-  jump: await getAnimation(jumpFrames, animationOptions),
-  attack1: await getAnimation(attack1Frames, animationOptions),
-  attack2: await getAnimation(attack2Frames, animationOptions),
-  attack3: await getAnimation(attack3Frames, animationOptions),
-  punch: await getAnimation(punchFrames, animationOptions),
-  walkAttack: await getAnimation(walkAttackFrames, animationOptions),
-  hurt: await getAnimation(hurtFrames, animationOptions),
-  die: await getAnimation(deathFrames, animationOptions),
-};
+const cyborgAnimations: Record<keyof CreatureAnimations, () => AnimatedSprite> =
+  {
+    idle: await getAnimation(idleFrames, animationOptions),
+    walk: await getAnimation(walkFrames, animationOptions),
+    jump: await getAnimation(jumpFrames, animationOptions),
+    attack1: await getAnimation(attack1Frames, animationOptions),
+    attack2: await getAnimation(attack2Frames, animationOptions),
+    attack3: await getAnimation(attack3Frames, animationOptions),
+    punch: await getAnimation(punchFrames, animationOptions),
+    walkAttack: await getAnimation(walkAttackFrames, animationOptions),
+    hurt: await getAnimation(hurtFrames, animationOptions),
+    die: await getAnimation(deathFrames, animationOptions),
+  };
 
 export class Cyborg extends Character {
   constructor(options?: {
@@ -43,7 +44,18 @@ export class Cyborg extends Character {
       position: options?.position,
       stage: options?.stage,
       controller: options?.controller,
-      animations: cyborgAnimations,
+      animations: {
+        idle: cyborgAnimations.idle(),
+        walk: cyborgAnimations.walk(),
+        jump: cyborgAnimations.jump(),
+        attack1: cyborgAnimations.attack1(),
+        attack2: cyborgAnimations.attack2(),
+        attack3: cyborgAnimations.attack3(),
+        punch: cyborgAnimations.punch(),
+        walkAttack: cyborgAnimations.walkAttack(),
+        hurt: cyborgAnimations.hurt(),
+        die: cyborgAnimations.die(),
+      },
     });
   }
 }

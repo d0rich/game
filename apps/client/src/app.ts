@@ -12,7 +12,11 @@ import { Character } from 'engine/src/entities';
 
 export async function setupApp(element: HTMLElement) {
   const players = new Map<string, Character>();
-  const ws = new WebSocket('ws://localhost:8080');
+  const ws = new WebSocket(
+    import.meta.env.PROD
+      ? 'wss://d0rich-game-server.onrender.com'
+      : 'ws://localhost:8080'
+  );
   const id = Number(new Date()).toString();
   ws.addEventListener('open', () => {
     ws.send(`player:new:${id}`);

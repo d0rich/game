@@ -1,4 +1,3 @@
 export * from './Controller';
 export * from './LocalController';
-export * from './RemoteController';
-export * from './RemoteDispatcher';
+export * from '../remote/RemoteController';

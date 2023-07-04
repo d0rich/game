@@ -1,4 +1,4 @@
-import { Controller } from './Controller';
+import { Controller } from '../control';
 
 export class RemoteDispatcher {
   constructor(id: string, controller: Controller, ws: WebSocket) {

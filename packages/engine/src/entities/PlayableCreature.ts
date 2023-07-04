@@ -24,6 +24,16 @@ export abstract class PlayableCreature extends Creature {
     }
   }
 
+  setController(controller: Controller) {
+    this.disconnectController();
+    this.setupController(controller);
+    this.controller = controller;
+  }
+
+  getController() {
+    return this.controller;
+  }
+
   protected disconnectController() {
     const controller = this.controller;
     if (!controller) return;
